@@ -12,10 +12,10 @@ public abstract class Button extends Object {
     }
 
     public boolean clicked(MouseEvent e) {
-        return  (e.getX() >= pos.x - dim.width/2) &&
-                    (e.getX() <= pos.x + dim.width/2) &&
-                    (e.getY() >= pos.y - dim.height/2) &&
-                    (e.getY() <= pos.y + dim.height/2);
+        return  (e.getX() >= pos.x - dim.width/2*scale) &&
+                    (e.getX() <= pos.x + dim.width/2*scale) &&
+                    (e.getY() >= pos.y - dim.height/2*scale) &&
+                    (e.getY() <= pos.y + dim.height/2*scale);
     }
 
 }

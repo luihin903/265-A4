@@ -3,8 +3,6 @@ package simulation;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
@@ -15,7 +13,9 @@ import static others.Setting.*;
 
 public class Spacecraft extends Button {
     
-    private static final PVector default_pos = new PVector(getPanelWidth() / 2, getPanelHeight() / 2);
+    private boolean atPosition = false;
+
+    private static final PVector default_pos = new PVector(getPanelWidth()/2, 210);
     private static final Dimension default_dim = new Dimension(300, 720);
 
     private GeneralPath head;
@@ -27,7 +27,7 @@ public class Spacecraft extends Button {
 
     public Spacecraft() {
         super(default_pos, default_dim);
-        scale = 0.5;
+        scale = 0.25;
     }
 
     @Override
@@ -90,8 +90,7 @@ public class Spacecraft extends Button {
 
     @Override
     protected void draw(Graphics2D g) {
-        g.setColor(Color.RED);
-        g.drawRect(0, 0, dim.width, dim.height);
+        
 
         g.setColor(STEEL.get());
         g.fill(topLeft);
@@ -115,5 +114,14 @@ public class Spacecraft extends Button {
 
         g.setColor(STEEL.get());
         g.drawLine(72, 160, 229, 160);
+    }
+
+    public void drawPosition(Graphics2D g) {
+        g.setColor(Color.RED);
+        g.drawRect((int) (getPanelCenter().width - dim.width/2*scale), 130, (int) (dim.width*scale), (int) (dim.height*scale));
+    }
+
+    public boolean atPosition() {
+        return atPosition;
     }
 }

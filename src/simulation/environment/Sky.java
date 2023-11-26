@@ -2,18 +2,18 @@ package simulation.environment;
 
 import static others.Colors.SKY_BLUE;
 import static others.Setting.*;
+import static others.Util.*;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-
-import processing.core.PVector;
 
 public class Sky extends simulation.Object {
     
     Rectangle2D.Double body;
 
     public Sky() {
-        super(new PVector(0, 0), getPanelDimension());
+        super(toPVector(getPanelCenter()), getPanelDimension());
+        scale = 1;
     }
 
     @Override

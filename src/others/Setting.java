@@ -4,8 +4,9 @@ import java.awt.Dimension;
 
 public class Setting {
 
-    private static final Dimension size = new Dimension(1280, 720);
+    private static final Dimension size = new Dimension(1200, 640);
     private static final int FPS = 30;
+    private static final int positionTolerance = 10;
 
 
 
@@ -21,7 +22,15 @@ public class Setting {
         return size;
     }
 
+    public static Dimension getPanelCenter() {
+        return new Dimension(size.width/2, size.height/2);
+    }
+
     public static int getFPS() {
         return FPS;
+    }
+
+    public static int getPositionTolerance() {
+        return positionTolerance;
     }
 }
