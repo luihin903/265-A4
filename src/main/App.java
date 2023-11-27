@@ -1,3 +1,7 @@
+/*
+ * The main app
+ */
+
 package main;
 
 import javax.swing.JFrame;

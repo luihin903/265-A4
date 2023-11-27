@@ -1,4 +1,10 @@
+/*
+ * Superclass of everything
+ */
+
 package simulation;
+
+import static util.Setting.*;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,13 +35,18 @@ public abstract class Object {
         g.scale(scale, scale);
         g.rotate(rotation);
 
-        g.setColor(Color.RED);
-        g.drawRect(0, 0, dim.width, dim.height);
+        if (drawBoundingBox()) {
+            g.setColor(Color.RED);
+            g.drawRect(0, 0, dim.width, dim.height);
+        }
 
         draw(g);
         g.setTransform(at);
     }
 
+    /**
+     * (0, 0) is the top-left corner instead of center
+     */
     protected abstract void draw(Graphics2D g);
 
     public PVector getPos() {

@@ -1,3 +1,8 @@
+/*
+ * The superclass of clickable objects:
+ * Booster, Spacecraft, Satellite, Launch
+ */
+
 package simulation;
 
 import java.awt.Dimension;

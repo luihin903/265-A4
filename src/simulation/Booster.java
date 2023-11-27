@@ -1,7 +1,11 @@
+/*
+ * The Super Heavy booster
+ */
+
 package simulation;
 
-import static others.Colors.STEEL;
-import static others.Setting.getPanelCenter;
+import static util.Colors.STEEL;
+import static util.Setting.getPanelCenter;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,12 +14,12 @@ import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
 
-public class Booster extends Button {
+public class Booster extends Button implements MovingTask {
     
     private boolean atPosition = false;
-    private PVector targetPosition = new PVector(getPanelCenter().width, 430);
+    private PVector targetPosition = new PVector(getPanelCenter().x, 410);
 
-    private static final PVector default_pos = new PVector(200, 400);
+    private static final PVector default_pos = new PVector(400, 400);
     private static final Dimension default_dim = new Dimension(300, 800);
 
     private Rectangle2D.Double body;
@@ -64,4 +68,9 @@ public class Booster extends Button {
     public void setAtPosition(boolean b) {
         atPosition = b;
     }
+
+    public void move(float x, float y) {
+        pos.add(new PVector(x, y));
+    }
+
 }

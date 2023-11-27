@@ -1,3 +1,7 @@
+/*
+ * The Straship spacecraft
+ */
+
 package simulation;
 
 import java.awt.Color;
@@ -8,14 +12,15 @@ import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
 
-import static others.Colors.*;
-import static others.Setting.*;
+import static util.Colors.*;
+import static util.Setting.*;
 
-public class Spacecraft extends Button {
+public class Spacecraft extends Button implements MovingTask {
     
     private boolean atPosition = false;
+    private PVector targetPosition = new PVector(getPanelCenter().x, 220);
 
-    private static final PVector default_pos = new PVector(getPanelWidth()/2, 210);
+    private static final PVector default_pos = new PVector(250, 410);
     private static final Dimension default_dim = new Dimension(300, 720);
 
     private GeneralPath head;
@@ -118,10 +123,23 @@ public class Spacecraft extends Button {
 
     public void drawPosition(Graphics2D g) {
         g.setColor(Color.RED);
-        g.drawRect((int) (getPanelCenter().width - dim.width/2*scale), 130, (int) (dim.width*scale), (int) (dim.height*scale));
+        g.drawRect((int) (targetPosition.x - dim.width/2*scale), (int) (targetPosition.y - dim.height/2*scale), (int) (dim.width*scale), (int) (dim.height*scale));
     }
 
     public boolean atPosition() {
         return atPosition;
     }
+
+    public PVector getTargetPosition() {
+        return targetPosition.copy();
+    }
+
+    public void setAtPosition(boolean b) {
+        atPosition = b;
+    }
+
+    public void move(float x, float y) {
+        pos.add(new PVector(x, y));
+    }
+
 }

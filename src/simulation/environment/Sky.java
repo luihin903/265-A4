@@ -1,8 +1,11 @@
+/*
+ * The sky
+ */
+
 package simulation.environment;
 
-import static others.Colors.SKY_BLUE;
-import static others.Setting.*;
-import static others.Util.*;
+import static util.Colors.SKY_BLUE;
+import static util.Setting.*;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -12,7 +15,7 @@ public class Sky extends simulation.Object {
     Rectangle2D.Double body;
 
     public Sky() {
-        super(toPVector(getPanelCenter()), getPanelDimension());
+        super(getPanelCenter(), getPanelDimension());
         scale = 1;
     }
 
