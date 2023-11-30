@@ -2,7 +2,7 @@
  * The Super Heavy booster
  */
 
-package simulation;
+package simulation.button;
 
 import static util.Colors.STEEL;
 import static util.Setting.getPanelCenter;
@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
+import simulation.MovingTask;
 
 public class Booster extends Button implements MovingTask {
     

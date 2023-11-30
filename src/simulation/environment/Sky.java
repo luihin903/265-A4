@@ -27,5 +27,6 @@ public class Sky extends simulation.Object {
     @Override
     protected void draw(Graphics2D g) {
         g.setColor(SKY_BLUE.get());
+        g.fill(body);
     }
 }

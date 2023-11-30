@@ -7,6 +7,7 @@ package main;
 import static util.Colors.*;
 import static util.Setting.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -20,12 +21,18 @@ import javax.swing.Timer;
 
 import processing.core.PVector;
 import simulation.*;
+import simulation.button.Booster;
+import simulation.button.Launch;
+import simulation.button.Satellite;
+import simulation.button.Spacecraft;
+import simulation.button.Start;
 import simulation.environment.*;
 
 public class Panel extends JPanel implements ActionListener {
     
-    private static int state = 1;
+    private static int state = 0;
 
+    private Start start;
     private Sky sky;
     private Ground ground;
     private Tower tower;
@@ -41,11 +48,11 @@ public class Panel extends JPanel implements ActionListener {
     private Timer timer;
 
     public Panel() {
-        this.setBackground(SKY_BLUE.get());
+        this.setBackground(Color.WHITE);
         setPreferredSize(getPanelDimension());
 
 
-
+        start = new Start();
         sky = new Sky();
         ground = new Ground();
         tower = new Tower();
@@ -72,29 +79,64 @@ public class Panel extends JPanel implements ActionListener {
         Graphics2D g = (Graphics2D) g1;
 
         // drawGrid(g);
-        
-        sky.paint(g);
-        ground.paint(g);
-        tower.paint(g);
-        if (state == 5) flame.paint(g);
-        block.paint(g);
-        spacecraft.paint(g);
-        booster.paint(g);
-        if (state <= 3) satellite.paint(g);
-        if (state == 4) launch.paint(g);
 
-        instruction.paint(g);
-        
+        switch (state) {
 
-        if (!booster.atPosition()) {
-            booster.drawPosition(g);
+            case 0: // starting
+                start.paint(g);
+                break;
+
+            case 1: // moving booster
+                sky.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                satellite.paint(g);
+                booster.drawPosition(g);
+                break;
+            
+            case 2: // moving spacecraft
+                sky.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                satellite.paint(g);
+                spacecraft.drawPosition(g);
+                break;
+
+            case 3: // moving satellite
+                sky.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                satellite.paint(g);
+                satellite.drawPosition(g);
+                break;
+
+            case 4: // ready to launch
+                sky.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                launch.paint(g);
+                break;
+
+            case 5: // launching
+                sky.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                flame.paint(g);
+                block.paint(g);
+                break;
         }
-        else if (!spacecraft.atPosition()) {
-            spacecraft.drawPosition(g);
-        }
-        else if (!satellite.atPosition()) {
-            satellite.drawPosition(g);
-        }
+        if (state > 0) instruction.paint(g);
+        
     }
 
     @Override
@@ -152,6 +194,10 @@ public class Panel extends JPanel implements ActionListener {
     
         @Override
         public void mouseClicked(MouseEvent e) {
+            if (state == 0 && start.clicked(e)) {
+                state = 1;
+            }
+            
             if (state == 4 && launch.clicked(e)) {
                 state = 5;
             }

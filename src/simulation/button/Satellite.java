@@ -2,7 +2,7 @@
  * The Starlink satellite
  */
 
-package simulation;
+package simulation.button;
 
 import static util.Setting.getPanelCenter;
 
@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import processing.core.PVector;
+import simulation.MovingTask;
 import util.ImageLoader;
 
 public class Satellite extends Button implements MovingTask {

@@ -2,7 +2,7 @@
  * The launching button
  */
 
-package simulation;
+package simulation.button;
 
 import static util.Colors.STEEL;
 

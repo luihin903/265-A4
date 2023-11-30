@@ -2,7 +2,7 @@
  * The Straship spacecraft
  */
 
-package simulation;
+package simulation.button;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +11,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
+import simulation.MovingTask;
 
 import static util.Colors.*;
 import static util.Setting.*;

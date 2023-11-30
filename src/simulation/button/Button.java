@@ -3,12 +3,13 @@
  * Booster, Spacecraft, Satellite, Launch
  */
 
-package simulation;
+package simulation.button;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
 import processing.core.PVector;
+import simulation.Object;
 
 public abstract class Button extends Object {
     
