@@ -12,7 +12,7 @@ public class App extends JFrame {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(0, 0);
-        Panel panel = new Panel();
+        Panel panel = new Panel(this);
         this.add(panel);
         this.pack();
         this.setLocationRelativeTo(null);

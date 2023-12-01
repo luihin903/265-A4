@@ -53,11 +53,19 @@ public class Setting {
         return FPS;
     }
 
+    public static int FPS() {
+        return FPS;
+    }
+
     public static int getPositionTolerance() {
         return positionTolerance;
     }
 
     public static Font getFont() {
+        return font;
+    }
+
+    public static Font font() {
         return font;
     }
 

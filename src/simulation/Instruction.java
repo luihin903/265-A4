@@ -4,7 +4,6 @@
 
 package simulation;
 
-import static main.Panel.getState;
 import static util.Setting.getFont;
 
 import java.awt.Color;
@@ -16,6 +15,8 @@ import processing.core.PVector;
 
 public class Instruction extends Object {
     
+    private int state;
+
     private static String[][] texts = {
         {"1. Move the Super Heavy", "booster to the correct", "location"},
         {"2. Move the Starship", "spacecraft to the correct", "location"},
@@ -32,6 +33,7 @@ public class Instruction extends Object {
     public Instruction() {
         super(default_pos, default_dim);
         scale = 1;
+        state = 0;
     }
 
     @Override
@@ -48,9 +50,13 @@ public class Instruction extends Object {
         g.draw(body);
         g.setFont(getFont());
 
-        String[] text = texts[getState()-1];
+        String[] text = texts[state-1];
         for (int i = 0; i < text.length; i ++) {
             g.drawString(text[i], 0, (i+1)*16);
         }
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

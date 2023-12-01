@@ -22,7 +22,7 @@ public abstract class Object {
     protected double rotation = 0;
 
     public Object(PVector pos, Dimension dim) {
-        this.pos = pos;
+        this.pos = pos.copy();
         this.dim = dim;
         setShape();
     }

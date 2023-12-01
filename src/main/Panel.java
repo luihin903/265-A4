@@ -1,10 +1,16 @@
 /*
+ * I used perlin noise for cloud and recursion for steam.
+ * See README.md for image resources,
+ * images without resources are created my me.
+ */
+
+
+/*
  * The panel
  */
 
 package main;
 
-import static util.Colors.*;
 import static util.Setting.*;
 
 import java.awt.Color;
@@ -16,24 +22,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import processing.core.PVector;
 import simulation.*;
-import simulation.button.Booster;
-import simulation.button.Launch;
-import simulation.button.Satellite;
-import simulation.button.Spacecraft;
-import simulation.button.Start;
+import simulation.button.*;
 import simulation.environment.*;
+import util.Setting;
 
 public class Panel extends JPanel implements ActionListener {
     
-    private static int state = 0;
+    private int state = 0;
+    private int launchTimer = 0;
 
+    private Cover cover;
     private Start start;
     private Sky sky;
+    private Cloud cloud;
     private Ground ground;
     private Tower tower;
     private Flame flame;
@@ -42,18 +49,25 @@ public class Panel extends JPanel implements ActionListener {
     private Booster booster;
     private Satellite satellite;
     private Launch launch;
+    private Steam steam;
     private Instruction instruction;
+    private Restart restart;
     
-
+    private JFrame frame;
     private Timer timer;
 
-    public Panel() {
+    public Panel(JFrame frame) {
+        this.frame = frame;
         this.setBackground(Color.WHITE);
         setPreferredSize(getPanelDimension());
 
+        state = 0;
+        launchTimer = 0;
 
+        cover = new Cover();
         start = new Start();
         sky = new Sky();
+        cloud = new Cloud();
         ground = new Ground();
         tower = new Tower();
         flame = new Flame();
@@ -62,8 +76,9 @@ public class Panel extends JPanel implements ActionListener {
         booster = new Booster();
         satellite = new Satellite();
         launch = new Launch();
+        steam = new Steam();
         instruction = new Instruction();
-        
+        restart = new Restart();
 
 
         timer = new Timer(getFPS(), this);
@@ -83,31 +98,37 @@ public class Panel extends JPanel implements ActionListener {
         switch (state) {
 
             case 0: // starting
+                cover.paint(g);
                 start.paint(g);
                 break;
 
             case 1: // moving booster
                 sky.paint(g);
+                cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
                 spacecraft.paint(g);
                 booster.paint(g);
                 satellite.paint(g);
                 booster.drawPosition(g);
+                instruction.paint(g);
                 break;
             
             case 2: // moving spacecraft
                 sky.paint(g);
+                cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
                 spacecraft.paint(g);
                 booster.paint(g);
                 satellite.paint(g);
                 spacecraft.drawPosition(g);
+                instruction.paint(g);
                 break;
 
             case 3: // moving satellite
                 sky.paint(g);
+                cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
                 spacecraft.paint(g);
@@ -118,25 +139,32 @@ public class Panel extends JPanel implements ActionListener {
 
             case 4: // ready to launch
                 sky.paint(g);
+                cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
                 spacecraft.paint(g);
                 booster.paint(g);
                 launch.paint(g);
+                instruction.paint(g);
                 break;
 
             case 5: // launching
                 sky.paint(g);
+                cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
                 spacecraft.paint(g);
                 booster.paint(g);
                 flame.paint(g);
                 block.paint(g);
+                steam.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 6:
+                restart.paint(g);
                 break;
         }
-        if (state > 0) instruction.paint(g);
-        
     }
 
     @Override
@@ -146,8 +174,13 @@ public class Panel extends JPanel implements ActionListener {
             booster.move(0, -5);
             spacecraft.move(0, -5);
             flame.move(0, -5);
+            steam.setTimer(launchTimer ++);
+            if (launchTimer > 10*Setting.FPS()) {
+                state = 6;
+            }
         }
-        
+
+        instruction.setState(state);
         repaint();
     }
 
@@ -158,10 +191,6 @@ public class Panel extends JPanel implements ActionListener {
         for (int i = 0; i < getPanelHeight(); i += 100) {
             g.drawLine(0, i, getPanelWidth(), i);
         }
-    }
-
-    public static int getState() {
-        return state;
     }
 
     private class MyMouseAdapter extends MouseAdapter {
@@ -200,6 +229,11 @@ public class Panel extends JPanel implements ActionListener {
             
             if (state == 4 && launch.clicked(e)) {
                 state = 5;
+            }
+
+            if (state == 6 && restart.clicked(e)) {
+                frame.dispose();
+                frame = new App("Starlink Mission w/Starship");
             }
         }
 
