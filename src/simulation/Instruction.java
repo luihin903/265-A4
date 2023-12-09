@@ -22,7 +22,10 @@ public class Instruction extends Object {
         {"2. Move the Starship", "spacecraft to the correct", "location"},
         {"3. Load the Starlink", "satellites for our mission"},
         {"4. Press the button to", "launch the Starship"},
-        {"Success"}
+        {"5. Wait for launch"},
+        {"6. Lift off!"},
+        {"7. "},
+        {"8. "}
     };
 
     private static final PVector default_pos = new PVector(150, 100);
@@ -43,6 +46,8 @@ public class Instruction extends Object {
 
     @Override
     protected void draw(Graphics2D g) {
+        this.state = panel.getState();
+
         g.setColor(Color.WHITE);
         g.fill(body);
 
@@ -54,9 +59,5 @@ public class Instruction extends Object {
         for (int i = 0; i < text.length; i ++) {
             g.drawString(text[i], 0, (i+1)*16);
         }
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 }

@@ -38,11 +38,11 @@ public class Cloud extends simulation.Object {
     protected void draw(Graphics2D g) {
         double noiseFactor;
 
-        for (int y = 0; y <= dim.height; y += 5) {
+        for (int y = 0; y <= dim.height; y += 15) {
             ySeed += 0.1;
             xSeed = xStart;
 
-            for (double x = Math.cos(map(y, 0, dim.height, 0, Math.PI*2)) * dim.width/2 - dim.height/2; x <= -Math.cos(map(y, 0, dim.height, 0, Math.PI*2)) * dim.width/2 - dim.height/2; x += 5) {
+            for (double x = Math.cos(map(y, 0, dim.height, 0, Math.PI*2)) * dim.width/2 - dim.height/2; x <= -Math.cos(map(y, 0, dim.height, 0, Math.PI*2)) * dim.width/2 - dim.height/2; x += 15) {
                 xSeed += 0.1;
                 noiseFactor = pa.noise((float) xSeed, (float) ySeed);
                 
@@ -50,7 +50,7 @@ public class Cloud extends simulation.Object {
                 g.translate(x + dim.width, y);
                 g.rotate(noiseFactor * Math.PI*3);
 
-                double diameter = noiseFactor * 35;
+                double diameter = noiseFactor * 75;
                 int grey = (int) (150 + noiseFactor*105);
                 int alpha = grey;
                 g.setColor(new Color(grey, grey, grey, alpha));

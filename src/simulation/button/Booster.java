@@ -13,13 +13,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
-import simulation.MovingTask;
 
-public class Booster extends Button implements MovingTask {
+public class Booster extends Button {
     
-    private boolean atPosition = false;
-    private PVector targetPosition = new PVector(getPanelCenter().x, 410);
-
     private static final PVector default_pos = new PVector(400, 400);
     private static final Dimension default_dim = new Dimension(300, 800);
 
@@ -29,6 +25,7 @@ public class Booster extends Button implements MovingTask {
     public Booster() {
         super(default_pos, default_dim);
         scale = 0.25;
+        targetPosition = new PVector(getPanelCenter().x, 410);
     }
 
     @Override
@@ -53,25 +50,10 @@ public class Booster extends Button implements MovingTask {
         g.draw(body);
     }
 
+    @Override
     public void drawPosition(Graphics2D g) {
         g.setColor(Color.RED);
         g.drawRect((int) (targetPosition.x - dim.width/2*scale), (int) (targetPosition.y - dim.height/2*scale), (int) (dim.width*scale), (int) (dim.height*scale));
-    }
-
-    public boolean atPosition() {
-        return atPosition;
-    }
-
-    public PVector getTargetPosition() {
-        return targetPosition.copy();
-    }
-
-    public void setAtPosition(boolean b) {
-        atPosition = b;
-    }
-
-    public void move(float x, float y) {
-        pos.add(new PVector(x, y));
     }
 
 }

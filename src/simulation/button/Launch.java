@@ -13,6 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
+import util.Setting;
 
 public class Launch extends Button {
     
@@ -22,9 +23,12 @@ public class Launch extends Button {
     private Rectangle2D.Double base;
     private Ellipse2D.Double button;
 
+    private int counter;
+
     public Launch() {
         super(default_pos, default_dim);
         scale = 1;
+        counter = Setting.FPS() * 12;
     }
 
     @Override
@@ -35,6 +39,7 @@ public class Launch extends Button {
 
     @Override
     protected void draw(Graphics2D g) {
+
         g.setColor(STEEL.get());
         g.fill(base);
 
@@ -46,5 +51,16 @@ public class Launch extends Button {
 
         g.setColor(Color.BLACK);
         g.draw(button);
+    }
+
+    public void update() {
+        this.count();
+    }
+
+    public void count() {
+        counter --;
+        if (counter == 0) {
+            panel.setState(6);
+        }
     }
 }

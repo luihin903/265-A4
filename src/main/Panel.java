@@ -26,10 +26,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+import factory.ButtonConcreteFactory;
+import factory.ObjectConcreteFactory;
+import factory.StarshipConcreteFactory;
 import processing.core.PVector;
-import simulation.*;
+import simulation.Object;
 import simulation.button.*;
-import simulation.environment.*;
+import simulation.starship.StarshipInterface;
+import util.MinimHelper;
 import util.Setting;
 
 public class Panel extends JPanel implements ActionListener {
@@ -37,24 +43,32 @@ public class Panel extends JPanel implements ActionListener {
     private int state = 0;
     private int launchTimer = 0;
 
-    private Cover cover;
-    private Start start;
-    private Sky sky;
-    private Cloud cloud;
-    private Ground ground;
-    private Tower tower;
-    private Flame flame;
-    private Block block;
-    private Spacecraft spacecraft;
-    private Booster booster;
-    private Satellite satellite;
-    private Launch launch;
-    private Steam steam;
-    private Instruction instruction;
-    private Restart restart;
+    private ObjectConcreteFactory of;
+    private ButtonConcreteFactory bf;
+    private StarshipConcreteFactory sf;
+
+    private Object cover;
+    private Button start;
+    private Object sky;
+    private Object cloud;
+    private Object ground;
+    private Object tower;
+    private Object block;
+    private Button spacecraft;
+    private Button booster;
+    private Button satellite;
+    private Button launchButton;
+    private Object steam;
+    private Object instruction;
+    private Button restart;
     
     private JFrame frame;
     private Timer timer;
+
+    private Minim minim;
+    private AudioPlayer launchAudio, ding;
+
+    private StarshipInterface starship;
 
     public Panel(JFrame frame) {
         this.frame = frame;
@@ -64,22 +78,30 @@ public class Panel extends JPanel implements ActionListener {
         state = 0;
         launchTimer = 0;
 
-        cover = new Cover();
-        start = new Start();
-        sky = new Sky();
-        cloud = new Cloud();
-        ground = new Ground();
-        tower = new Tower();
-        flame = new Flame();
-        block = new Block();
-        spacecraft = new Spacecraft();
-        booster = new Booster();
-        satellite = new Satellite();
-        launch = new Launch();
-        steam = new Steam();
-        instruction = new Instruction();
-        restart = new Restart();
+        of = new ObjectConcreteFactory(this);
+        bf = new ButtonConcreteFactory(this);
+        sf = new StarshipConcreteFactory(this);
 
+        cover = of.create("cover");
+        start = bf.create("start");
+        sky = of.create("sky");
+        cloud = of.create("cloud");
+        ground = of.create("ground");
+        tower = of.create("tower");
+        block = of.create("block");
+        spacecraft = bf.create("spacecraft");
+        booster = bf.create("booster");
+        satellite = bf.create("satellite");
+        launchButton = bf.create("launch");
+        steam = of.create("steam");
+        instruction = of.create("instruction");
+        restart = bf.create("restart");
+
+        starship = sf.create("basic");
+
+        minim = new Minim(new MinimHelper());
+        launchAudio = minim.loadFile("assets/Launch.mp3");
+        ding = minim.loadFile("assets/Ding.mp3");
 
         timer = new Timer(getFPS(), this);
         timer.start();
@@ -94,7 +116,7 @@ public class Panel extends JPanel implements ActionListener {
         Graphics2D g = (Graphics2D) g1;
 
         // drawGrid(g);
-
+        
         switch (state) {
 
             case 0: // starting
@@ -119,8 +141,8 @@ public class Panel extends JPanel implements ActionListener {
                 cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
+                starship.decorate(g);
                 spacecraft.paint(g);
-                booster.paint(g);
                 satellite.paint(g);
                 spacecraft.drawPosition(g);
                 instruction.paint(g);
@@ -131,8 +153,7 @@ public class Panel extends JPanel implements ActionListener {
                 cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
-                spacecraft.paint(g);
-                booster.paint(g);
+                starship.decorate(g);
                 satellite.paint(g);
                 satellite.drawPosition(g);
                 break;
@@ -142,26 +163,34 @@ public class Panel extends JPanel implements ActionListener {
                 cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
-                spacecraft.paint(g);
-                booster.paint(g);
-                launch.paint(g);
+                starship.decorate(g);
+                launchButton.paint(g);
                 instruction.paint(g);
                 break;
 
-            case 5: // launching
+            case 5: // waiting to launch
                 sky.paint(g);
                 cloud.paint(g);
                 ground.paint(g);
                 tower.paint(g);
-                spacecraft.paint(g);
-                booster.paint(g);
-                flame.paint(g);
+                starship.decorate(g);
+                block.paint(g);
+                steam.paint(g);
+                instruction.paint(g);
+                break;
+            
+            case 6: // launching
+                sky.paint(g);
+                cloud.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                starship.decorate(g);
                 block.paint(g);
                 steam.paint(g);
                 instruction.paint(g);
                 break;
 
-            case 6:
+            case 7:
                 restart.paint(g);
                 break;
         }
@@ -171,16 +200,17 @@ public class Panel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         
         if (state == 5) {
-            booster.move(0, -5);
-            spacecraft.move(0, -5);
-            flame.move(0, -5);
-            steam.setTimer(launchTimer ++);
+            launchButton.update();
+        }
+
+        if (state == 6) {
+            starship.move(0, -5);
+            launchTimer ++;
             if (launchTimer > 10*Setting.FPS()) {
-                state = 6;
+                state = 7;
             }
         }
 
-        instruction.setState(state);
         repaint();
     }
 
@@ -193,6 +223,18 @@ public class Panel extends JPanel implements ActionListener {
         }
     }
 
+    public int getLaunchTimer() {
+        return this.launchTimer;
+    }
+
+    public int getState() {
+        return this.state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
     private class MyMouseAdapter extends MouseAdapter {
 
         @Override
@@ -203,6 +245,8 @@ public class Panel extends JPanel implements ActionListener {
                     booster.setAtPosition(true);
                     booster.setPos(booster.getTargetPosition());
                     if (state == 1) state = 2;
+                    ding.play(0);
+                    starship = sf.create("booster");
                 }
             }
             else if (!spacecraft.atPosition()) {
@@ -210,6 +254,8 @@ public class Panel extends JPanel implements ActionListener {
                     spacecraft.setAtPosition(true);
                     spacecraft.setPos(spacecraft.getTargetPosition());
                     if (state == 2) state = 3;
+                    ding.play(0);
+                    starship = sf.create("spacecraft");
                 }
             }
             else if (!satellite.atPosition()) {
@@ -217,6 +263,8 @@ public class Panel extends JPanel implements ActionListener {
                     satellite.setAtPosition(true);
                     satellite.setPos(satellite.getTargetPosition());
                     if (state == 3) state = 4;
+                    ding.play(0);
+                    starship = sf.create("satellite");
                 }
             }
         }
@@ -227,11 +275,13 @@ public class Panel extends JPanel implements ActionListener {
                 state = 1;
             }
             
-            if (state == 4 && launch.clicked(e)) {
+            if (state == 4 && launchButton.clicked(e)) {
+                launchAudio.play(0);
                 state = 5;
+                starship = sf.create("flame");
             }
 
-            if (state == 6 && restart.clicked(e)) {
+            if (state == 7 && restart.clicked(e)) {
                 frame.dispose();
                 frame = new App("Starlink Mission w/Starship");
             }
@@ -244,20 +294,15 @@ public class Panel extends JPanel implements ActionListener {
         @Override
         public void mouseDragged(MouseEvent e) {
             
-            MovingTask[] objects = {booster, spacecraft, satellite};
+            Button[] buttons = {booster, spacecraft, satellite};
 
-            for (MovingTask o : objects) {
-                if (!o.atPosition() && o.clicked(e)) {
-                    o.setPos(e);
+            for (Button b : buttons) {
+                if (!b.atPosition() && b.clicked(e)) {
+                    b.setPos(e);
                 }
             }
-
-            // if (!booster.atPosition() && booster.clicked(e)) {
-            //     booster.setPos(e);
-            // }
-            // if (!spacecraft.atPosition() && spacecraft.clicked(e)) {
-            //     spacecraft.setPos(e);
-            // }
         }
+    
     }
+
 }

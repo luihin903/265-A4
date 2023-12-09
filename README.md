@@ -14,3 +14,9 @@ Resources:
 
     3. Cover.png
         https://twitter.com/elonmusk/status/1533408313894912001
+
+    4. Launch.mp3
+        https://www.youtube.com/watch?v=C3iHAgwIYtI&ab_channel=SpaceX
+
+    5. Ding.mp3
+        https://www.youtube.com/watch?v=GVAF07-2Xic&t=2s&ab_channel=GamingSoundFX

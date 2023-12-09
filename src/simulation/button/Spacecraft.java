@@ -11,15 +11,11 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
-import simulation.MovingTask;
 
 import static util.Colors.*;
 import static util.Setting.*;
 
-public class Spacecraft extends Button implements MovingTask {
-    
-    private boolean atPosition = false;
-    private PVector targetPosition = new PVector(getPanelCenter().x, 220);
+public class Spacecraft extends Button {
 
     private static final PVector default_pos = new PVector(250, 410);
     private static final Dimension default_dim = new Dimension(300, 720);
@@ -34,6 +30,7 @@ public class Spacecraft extends Button implements MovingTask {
     public Spacecraft() {
         super(default_pos, default_dim);
         scale = 0.25;
+        targetPosition = new PVector(getPanelCenter().x, 220);
     }
 
     @Override
@@ -122,25 +119,10 @@ public class Spacecraft extends Button implements MovingTask {
         g.drawLine(72, 160, 229, 160);
     }
 
+    @Override
     public void drawPosition(Graphics2D g) {
         g.setColor(Color.RED);
         g.drawRect((int) (targetPosition.x - dim.width/2*scale), (int) (targetPosition.y - dim.height/2*scale), (int) (dim.width*scale), (int) (dim.height*scale));
-    }
-
-    public boolean atPosition() {
-        return atPosition;
-    }
-
-    public PVector getTargetPosition() {
-        return targetPosition.copy();
-    }
-
-    public void setAtPosition(boolean b) {
-        atPosition = b;
-    }
-
-    public void move(float x, float y) {
-        pos.add(new PVector(x, y));
     }
 
 }

@@ -12,13 +12,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import processing.core.PVector;
-import simulation.MovingTask;
 import util.ImageLoader;
 
-public class Satellite extends Button implements MovingTask {
-    
-    private boolean atPosition = false;
-    private PVector targetPosition = new PVector(getPanelCenter().x, 220);
+public class Satellite extends Button {
 
     private BufferedImage img;
 
@@ -28,6 +24,7 @@ public class Satellite extends Button implements MovingTask {
     public Satellite() {
         super(default_pos, default_dim);
         scale = 1;
+        targetPosition = new PVector(getPanelCenter().x, 220);
     }
 
     @Override
@@ -40,21 +37,10 @@ public class Satellite extends Button implements MovingTask {
         g.drawImage(img, 0, 0, null);
     }
 
+    @Override
     public void drawPosition(Graphics2D g) {
         g.setColor(Color.RED);
         g.drawRect((int) (targetPosition.x - dim.width/2*scale), (int) (targetPosition.y - dim.height/2*scale), (int) (dim.width*scale), (int) (dim.height*scale));
-    }
-
-    public boolean atPosition() {
-        return atPosition;
-    }
-
-    public PVector getTargetPosition() {
-        return targetPosition.copy();
-    }
-
-    public void setAtPosition(boolean b) {
-        atPosition = b;
     }
 
 }
