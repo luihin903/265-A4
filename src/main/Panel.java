@@ -61,6 +61,8 @@ public class Panel extends JPanel implements ActionListener {
     private Object steam;
     private Object instruction;
     private Button restart;
+    private Object blurredStarship;
+    private Object boosterEngines;
     
     private JFrame frame;
     private Timer timer;
@@ -96,6 +98,8 @@ public class Panel extends JPanel implements ActionListener {
         steam = of.create("steam");
         instruction = of.create("instruction");
         restart = bf.create("restart");
+        blurredStarship = of.create("blurredStarship");
+        boosterEngines = of.create("boosterEngines");
 
         starship = sf.create("basic");
 
@@ -179,7 +183,7 @@ public class Panel extends JPanel implements ActionListener {
                 instruction.paint(g);
                 break;
             
-            case 6: // launching
+            case 6: // Flying
                 sky.paint(g);
                 cloud.paint(g);
                 ground.paint(g);
@@ -190,7 +194,15 @@ public class Panel extends JPanel implements ActionListener {
                 instruction.paint(g);
                 break;
 
-            case 7:
+            case 7: 
+                sky.paint(g);
+                blurredStarship.paint(g);
+                // starship.decorate(g);
+                boosterEngines.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 8:
                 restart.paint(g);
                 break;
         }
@@ -204,10 +216,18 @@ public class Panel extends JPanel implements ActionListener {
         }
 
         if (state == 6) {
-            starship.move(0, -5);
+            ground.move(0, 5);
+            cloud.move(0, 5);
+            tower.move(0, 5);
+            block.move(0, 5);
+            steam.move(0, 5);
             launchTimer ++;
             if (launchTimer > 10*Setting.FPS()) {
-                state = 7;
+                cloud.move(0, 5);
+                starship.rotate(0.1);
+                if (starship.getRotation() >= 45) {
+                    state = 7;
+                }
             }
         }
 

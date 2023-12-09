@@ -19,6 +19,12 @@ public class ObjectConcreteFactory extends AbstractFactory {
             case "block":
                 o = new Block();
                 break;
+            case "blurredStarship":
+                o = new BlurredStarship();
+                break;
+            case "boosterEngines":
+                o = new BoosterEngines();
+                break;
             case "cloud":
                 o = new Cloud();
                 break;

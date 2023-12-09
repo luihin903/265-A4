@@ -24,8 +24,9 @@ public class Instruction extends Object {
         {"4. Press the button to", "launch the Starship"},
         {"5. Wait for launch"},
         {"6. Lift off!"},
-        {"7. "},
-        {"8. "}
+        {"7. Turn off Engines on", "Super Heavy booster", "except the 3 at the center,", "and turn on the engines on", "the Starship spacecraft"},
+        {"8. "},
+        {"9. "}
     };
 
     private static final PVector default_pos = new PVector(150, 100);

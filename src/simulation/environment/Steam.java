@@ -27,7 +27,7 @@ public class Steam extends simulation.Object {
 
     @Override
     protected void draw(Graphics2D g) {
-        this.diameter = panel.getLaunchTimer();
+        this.diameter = panel.getLaunchTimer() * 5;
         g.setColor(Color.WHITE);
         draw(g, diameter);
     }

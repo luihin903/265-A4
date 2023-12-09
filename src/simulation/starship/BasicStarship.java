@@ -11,6 +11,8 @@ import simulation.Object;
 
 public class BasicStarship extends Object implements StarshipInterface {
     
+    protected double rotation;
+
     private static final PVector default_pos = new PVector(getPanelCenter().x, getPanelHeight()-130-380/2);
     private static final Dimension default_dim = new Dimension(75, 380);
 
@@ -30,5 +32,15 @@ public class BasicStarship extends Object implements StarshipInterface {
     @Override
     public void decorate(Graphics2D g) {
         // g.drawRect((int) (pos.x-dim.width/2), (int)(pos.y-dim.height/2), dim.width, dim.height);
+    }
+
+    @Override
+    public void rotate(double theta) {
+        rotation += theta;
+    }
+
+    @Override
+    public double getRotation() {
+        return rotation;
     }
 }

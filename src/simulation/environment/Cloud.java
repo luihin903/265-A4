@@ -1,5 +1,6 @@
 package simulation.environment;
 
+import static util.Setting.getPanelCenter;
 import static util.Util.map;
 import static util.Util.random;
 
@@ -59,6 +60,14 @@ public class Cloud extends simulation.Object {
                 g.setTransform(at);
 
             }
+        }
+    }
+
+    @Override
+    public void move(int x, int y) {
+        pos.add(new PVector(x, y));
+        if (pos.y > 800) {
+            pos.add(new PVector((getPanelCenter().x-pos.x)*2, -1000));
         }
     }
 }

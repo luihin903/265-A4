@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 public class BoosterDecorator extends StarshipDecorator {
-    
+
     private Rectangle2D.Double body;
     private Rectangle2D.Double fins;
 

@@ -16,6 +16,7 @@ public abstract class StarshipDecorator implements StarshipInterface {
     protected PVector pos;
     protected Dimension dim;
     protected double scale;
+    protected double rotation;
 
     public StarshipDecorator(StarshipInterface _baseStarship) {
         baseStarship = _baseStarship;
@@ -35,5 +36,15 @@ public abstract class StarshipDecorator implements StarshipInterface {
     public void move(int x, int y) {
         pos.add(new PVector(x, y));
         baseStarship.move(x, y);
+    }
+
+    @Override
+    public void rotate(double theta) {
+        rotation += theta;
+    }
+
+    @Override
+    public double getRotation() {
+        return rotation;
     }
 }
