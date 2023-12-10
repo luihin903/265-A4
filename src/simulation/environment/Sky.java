@@ -10,6 +10,8 @@ import static util.Setting.*;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import util.Util;
+
 public class Sky extends simulation.Object {
     
     Rectangle2D.Double body;
@@ -26,7 +28,7 @@ public class Sky extends simulation.Object {
 
     @Override
     protected void draw(Graphics2D g) {
-        g.setColor(SKY_BLUE.get());
+        g.setColor(Util.add(SKY_BLUE.get(), -panel.getLaunchTimer()/4));
         g.fill(body);
     }
 }

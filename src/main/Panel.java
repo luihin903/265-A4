@@ -18,6 +18,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -42,6 +44,13 @@ public class Panel extends JPanel implements ActionListener {
     
     private int state = 0;
     private int launchTimer = 0;
+    private float altitude = 100;
+
+    // keyboard control
+    private boolean up;
+    private boolean down;
+    private boolean left;
+    private boolean right;
 
     private ObjectConcreteFactory of;
     private ButtonConcreteFactory bf;
@@ -63,12 +72,16 @@ public class Panel extends JPanel implements ActionListener {
     private Button restart;
     private Object blurredStarship;
     private Object boosterEngines;
+    private Object spacecraftEngines;
+    private Object aim;
+    private Object landingBooster;
+    private Object altitudeBar;
     
     private JFrame frame;
     private Timer timer;
 
     private Minim minim;
-    private AudioPlayer launchAudio, ding;
+    private AudioPlayer launchAudio, ding, fail;
 
     private StarshipInterface starship;
 
@@ -79,6 +92,12 @@ public class Panel extends JPanel implements ActionListener {
 
         state = 0;
         launchTimer = 0;
+        altitude = 100;
+
+        up = false;
+        down = false;
+        left = false;
+        right = false;
 
         of = new ObjectConcreteFactory(this);
         bf = new ButtonConcreteFactory(this);
@@ -100,26 +119,32 @@ public class Panel extends JPanel implements ActionListener {
         restart = bf.create("restart");
         blurredStarship = of.create("blurredStarship");
         boosterEngines = of.create("boosterEngines");
+        spacecraftEngines = of.create("spacecraftEngines");
+        Engine.init(this);
+        aim = of.create("aim");
+        landingBooster = of.create("landingBooster");
+        altitudeBar = of.create("altitudeBar");
 
         starship = sf.create("basic");
 
         minim = new Minim(new MinimHelper());
         launchAudio = minim.loadFile("assets/Launch.mp3");
         ding = minim.loadFile("assets/Ding.mp3");
+        fail = minim.loadFile("assets/Fail.mp3");
 
         timer = new Timer(getFPS(), this);
         timer.start();
 
         addMouseListener(new MyMouseAdapter());
         addMouseMotionListener(new MyMouseMotionAdapter());
+        addKeyListener(new MyKeyAdapter());
+        setFocusable(true);
     }
 
     @Override
     public void paintComponent(Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g = (Graphics2D) g1;
-
-        // drawGrid(g);
         
         switch (state) {
 
@@ -160,6 +185,7 @@ public class Panel extends JPanel implements ActionListener {
                 starship.decorate(g);
                 satellite.paint(g);
                 satellite.drawPosition(g);
+                instruction.paint(g);
                 break;
 
             case 4: // ready to launch
@@ -197,15 +223,32 @@ public class Panel extends JPanel implements ActionListener {
             case 7: 
                 sky.paint(g);
                 blurredStarship.paint(g);
-                // starship.decorate(g);
                 boosterEngines.paint(g);
+                spacecraftEngines.paint(g);
+                Engine.paintAll(g);
                 instruction.paint(g);
                 break;
 
-            case 8:
+            case 8: // separating
+                sky.paint(g);
+                spacecraft.paint(g);
+                booster.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 9:
+                sky.paint(g);
+                aim.paint(g);
+                landingBooster.paint(g);
+                altitudeBar.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 10:
                 restart.paint(g);
                 break;
         }
+        // drawGrid(g);
     }
 
     @Override
@@ -231,6 +274,19 @@ public class Panel extends JPanel implements ActionListener {
             }
         }
 
+        if (state == 8) {
+            spacecraft.move(2, -2);
+            booster.rotate(-0.5);
+            if (booster.getRotation() <= -90) {
+                state = 9;
+            }
+        }
+
+        if (state == 9) {
+            altitude -= 0.2;
+            landingBooster.update();
+        }
+
         repaint();
     }
 
@@ -243,6 +299,14 @@ public class Panel extends JPanel implements ActionListener {
         }
     }
 
+    public void playDing() {
+        ding.play(0);
+    }
+
+    public void playFail() {
+        fail.play(0);
+    }
+
     public int getLaunchTimer() {
         return this.launchTimer;
     }
@@ -251,11 +315,50 @@ public class Panel extends JPanel implements ActionListener {
         return this.state;
     }
 
+    public float getAltitude() {
+        return altitude;
+    }
+
     public void setState(int state) {
         this.state = state;
+
+        if (state == 8) {
+            spacecraft.setPos(getPanelCenter().x + (float) Math.sqrt(5000), getPanelCenter().y - (float) Math.sqrt(5000));
+            spacecraft.setRotation(45);
+            booster.setPos(getPanelCenter().x - (float) Math.sqrt(4050), getPanelCenter().y + (float) Math.sqrt(4050));
+            booster.setRotation(45);
+        }
+    }
+
+    public void setAltitude(float altitude) {
+        this.altitude = altitude;
     }
 
     private class MyMouseAdapter extends MouseAdapter {
+  
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (state == 0 && start.clicked(e)) {
+                state = 1;
+            }
+            
+            if (state == 4 && launchButton.clicked(e)) {
+                launchAudio.play(0);
+                state = 5;
+                starship = sf.create("flame");
+            }
+
+            if (state == 7) {
+                Engine.checkClicking(e);
+            }
+
+            if (state == 10 && restart.clicked(e)) {
+                frame.dispose();
+                frame = new App("Starlink Mission w/Starship");
+            }
+
+            System.out.printf("{%d, %d},\n", e.getX(), e.getY());
+        }
 
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -288,25 +391,7 @@ public class Panel extends JPanel implements ActionListener {
                 }
             }
         }
-    
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (state == 0 && start.clicked(e)) {
-                state = 1;
-            }
-            
-            if (state == 4 && launchButton.clicked(e)) {
-                launchAudio.play(0);
-                state = 5;
-                starship = sf.create("flame");
-            }
-
-            if (state == 7 && restart.clicked(e)) {
-                frame.dispose();
-                frame = new App("Starlink Mission w/Starship");
-            }
-        }
-
+  
     }
 
     private class MyMouseMotionAdapter extends MouseMotionAdapter {
@@ -325,4 +410,59 @@ public class Panel extends JPanel implements ActionListener {
     
     }
 
+    private class MyKeyAdapter extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            
+            int c = e.getKeyCode();
+
+            if (c == KeyEvent.VK_UP || c == KeyEvent.VK_W) {
+                if (state == 9 && up == false) {
+                    landingBooster.move(0, -20);
+                }
+                up = true;
+            }
+            if (c == KeyEvent.VK_DOWN || c == KeyEvent.VK_S) {
+                if (state == 9 && down == false) {
+                    landingBooster.move(0, 20);
+                }
+                down = true;
+            }
+            if (c == KeyEvent.VK_LEFT || c == KeyEvent.VK_A) {
+                if (state == 9 && left == false) {
+                    landingBooster.move(-20, 0);
+                }
+                left = true;
+            }
+            if (c == KeyEvent.VK_RIGHT || c == KeyEvent.VK_D) {
+                if (state == 9 && right == false) {
+                    landingBooster.move(20, 0);
+                }
+                right = true;
+            }
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+            int c = e.getKeyCode();
+
+            if (c == KeyEvent.VK_UP || c == KeyEvent.VK_W) {
+                up = false;
+            }
+            if (c == KeyEvent.VK_DOWN || c == KeyEvent.VK_S) {
+                down = false;
+            }
+            if (c == KeyEvent.VK_LEFT || c == KeyEvent.VK_A) {
+                left = false;
+            }
+            if (c == KeyEvent.VK_RIGHT || c == KeyEvent.VK_D) {
+                right = false;
+            }
+
+        }
+       
+    }
 }

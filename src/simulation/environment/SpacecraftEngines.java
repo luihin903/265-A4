@@ -12,8 +12,8 @@ public class SpacecraftEngines extends Object {
     
     BufferedImage img;
 
-    private static final PVector default_pos = new PVector(300, 300);
-    private static final Dimension default_dim = new Dimension(475, 475);
+    private static final PVector default_pos = new PVector(900, 300);
+    private static final Dimension default_dim = new Dimension(443, 490);
 
     public SpacecraftEngines() {
         super(default_pos, default_dim);
@@ -22,7 +22,7 @@ public class SpacecraftEngines extends Object {
 
     @Override
     protected void setShape() {
-        img = ImageLoader.loadImage("assets/Booster_Engines.png");
+        img = ImageLoader.loadImage("assets/Spacecraft_Engines.jpg");
     }
 
     @Override

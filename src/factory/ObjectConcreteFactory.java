@@ -16,6 +16,13 @@ public class ObjectConcreteFactory extends AbstractFactory {
         Object o;
 
         switch(type) {
+            case "aim":
+                o = new Aim();
+                break;
+            case "altitudeBar":
+                o = new AltitudeBar();
+                o.setPanel(panel);
+                break;
             case "block":
                 o = new Block();
                 break;
@@ -37,8 +44,16 @@ public class ObjectConcreteFactory extends AbstractFactory {
             case "ground":
                 o = new Ground();
                 break;
+            case "landingBooster":
+                o = new LandingBooster();
+                o.setPanel(panel);
+                break;
             case "sky":
                 o = new Sky();
+                o.setPanel(panel);
+                break;
+            case "spacecraftEngines":
+                o = new SpacecraftEngines();
                 break;
             case "steam":
                 o = new Steam();

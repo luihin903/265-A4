@@ -12,7 +12,7 @@ public class BoosterEngines extends Object {
     
     BufferedImage img;
 
-    private static final PVector default_pos = new PVector(300, 300);
+    private static final PVector default_pos = new PVector(375, 350);
     private static final Dimension default_dim = new Dimension(475, 475);
 
     public BoosterEngines() {

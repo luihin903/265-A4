@@ -11,7 +11,7 @@ public class BlurredStarship extends simulation.Object{
     
     BufferedImage img;
 
-    private static final PVector default_pos = new PVector(500, 300);
+    private static final PVector default_pos = new PVector(550, 350);
     private static final Dimension default_dim = new Dimension(1148, 881);
 
     public BlurredStarship() {
