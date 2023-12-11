@@ -1,3 +1,7 @@
+/*
+ * A background when separating
+ */
+
 package simulation.environment;
 
 import java.awt.Dimension;

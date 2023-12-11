@@ -1,3 +1,7 @@
+/*
+ * A target for the landingBooster to aim
+ */
+
 package simulation.environment;
 
 import static util.Setting.getPanelCenter;

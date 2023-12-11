@@ -1,3 +1,7 @@
+/*
+ * A base of the decorator
+ */
+
 package simulation.starship;
 
 import static util.Setting.getPanelCenter;

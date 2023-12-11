@@ -1,3 +1,7 @@
+/*
+ * The abstract factory
+ */
+
 package factory;
 
 import main.Panel;

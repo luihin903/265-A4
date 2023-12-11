@@ -1,3 +1,7 @@
+/*
+ * The landing booster with Perlin noise
+ */
+
 package simulation.environment;
 
 import static util.Colors.STEEL;

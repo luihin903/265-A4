@@ -1,3 +1,7 @@
+/*
+ * A progress bar when aiming
+ */
+
 package simulation.environment;
 
 import static util.Colors.STEEL;

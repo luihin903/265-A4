@@ -1,3 +1,7 @@
+/*
+ * A cover image
+ */
+
 package simulation.environment;
 
 import static util.Setting.getPanelCenter;

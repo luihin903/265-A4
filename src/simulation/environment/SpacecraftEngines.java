@@ -1,3 +1,7 @@
+/*
+ * An image of the engines on the spacecraft
+ */
+
 package simulation.environment;
 
 import java.awt.Dimension;

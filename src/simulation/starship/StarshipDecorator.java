@@ -1,3 +1,7 @@
+/*
+ * The abstract decorator
+ */
+
 package simulation.starship;
 
 import static util.Setting.getPanelCenter;

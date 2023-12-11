@@ -1,3 +1,7 @@
+/*
+ * Cloud using Perlin noise
+ */
+
 package simulation.environment;
 
 import static util.Setting.getPanelCenter;

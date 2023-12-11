@@ -1,3 +1,7 @@
+/*
+ * A button to start the simulation
+ */
+
 package simulation.button;
 
 import static util.Setting.getPanelCenter;

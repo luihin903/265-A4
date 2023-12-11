@@ -1,3 +1,7 @@
+/*
+ * A decorator of spacecraft added on BoosterDecorator
+ */
+
 package simulation.starship;
 
 import java.awt.Graphics2D;

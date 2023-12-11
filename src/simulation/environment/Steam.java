@@ -1,3 +1,7 @@
+/*
+ * The white smoke when launching with recursion
+ */
+
 package simulation.environment;
 
 import static util.Setting.getPanelCenter;

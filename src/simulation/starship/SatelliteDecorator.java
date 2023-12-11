@@ -1,3 +1,7 @@
+/*
+ * A decorator of satellite added on SpacecraftDecorator
+ */
+
 package simulation.starship;
 
 import java.awt.Graphics2D;

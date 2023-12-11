@@ -1,3 +1,7 @@
+/*
+ * A flame decorator added on SatelliteDecorator
+ */
+
 package simulation.starship;
 
 import static util.Setting.getPanelCenter;

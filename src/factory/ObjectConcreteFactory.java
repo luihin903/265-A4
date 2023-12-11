@@ -1,3 +1,7 @@
+/*
+ * The factory for objects
+ */
+
 package factory;
 
 import main.Panel;

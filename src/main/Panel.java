@@ -1,5 +1,5 @@
 /*
- * I used perlin noise for cloud and recursion for steam.
+ * I used perlin noise for cloud, landingBooster movement, and recursion for steam.
  * See README.md for image resources,
  * images without resources are created my me.
  */
@@ -236,7 +236,7 @@ public class Panel extends JPanel implements ActionListener {
                 instruction.paint(g);
                 break;
 
-            case 9:
+            case 9: // aiming
                 sky.paint(g);
                 aim.paint(g);
                 landingBooster.paint(g);
@@ -244,7 +244,34 @@ public class Panel extends JPanel implements ActionListener {
                 instruction.paint(g);
                 break;
 
-            case 10:
+            case 10: // landing booster
+                sky.paint(g);
+                cloud.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                booster.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 11:
+                sky.paint(g);
+                spacecraft.paint(g);
+                satellite.paint(g);
+                instruction.paint(g);
+                break;
+
+            case 12:
+                sky.paint(g);
+                cloud.paint(g);
+                ground.paint(g);
+                tower.paint(g);
+                booster.paint(g);
+                spacecraft.paint(g);
+                instruction.paint(g);
+                break;
+
+
+            case 13:
                 restart.paint(g);
                 break;
         }
@@ -285,6 +312,32 @@ public class Panel extends JPanel implements ActionListener {
         if (state == 9) {
             altitude -= 0.2;
             landingBooster.update();
+        }
+
+        if (state == 10) {
+            booster.move(0, 4);
+            if (booster.getPos().y >= getPanelHeight()-230) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception exception) {}
+                state = 11;
+                spacecraft.setPos(getPanelCenter());
+                spacecraft.setRotation(90);                
+            }
+        }
+
+        if (state == 11) {
+            satellite.setAtPosition(false);
+        }
+
+        if (state == 12) {
+            spacecraft.move(0, 4);
+            if (spacecraft.getPos().y >= 220) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception exception) {}
+                state = 13;
+            }
         }
 
         repaint();
@@ -328,6 +381,14 @@ public class Panel extends JPanel implements ActionListener {
             booster.setPos(getPanelCenter().x - (float) Math.sqrt(4050), getPanelCenter().y + (float) Math.sqrt(4050));
             booster.setRotation(45);
         }
+
+        if (state == 10) {
+            ground.setPos(new PVector(getPanelCenter().x, getPanelHeight()/4*3));
+            tower.setPos(new PVector(700, 300));
+            cloud.setPos(new PVector(1000, 100));
+            booster.setRotation(0);
+            booster.setPos(new PVector(getPanelCenter().x, -200));
+        }
     }
 
     public void setAltitude(float altitude) {
@@ -352,12 +413,12 @@ public class Panel extends JPanel implements ActionListener {
                 Engine.checkClicking(e);
             }
 
-            if (state == 10 && restart.clicked(e)) {
+            if (state == 13 && restart.clicked(e)) {
                 frame.dispose();
                 frame = new App("Starlink Mission w/Starship");
             }
 
-            System.out.printf("{%d, %d},\n", e.getX(), e.getY());
+            // System.out.printf("{%d, %d},\n", e.getX(), e.getY());
         }
 
         @Override
@@ -389,6 +450,13 @@ public class Panel extends JPanel implements ActionListener {
                     ding.play(0);
                     starship = sf.create("satellite");
                 }
+            }
+        
+            if (state == 11 && PVector.dist(satellite.getPos(), satellite.getTargetPosition()) > 200) {
+                ding.play(0);
+                state = 12;
+                spacecraft.setRotation(0);
+                spacecraft.setPos(new PVector(getPanelCenter().x, -200));
             }
         }
   

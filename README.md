@@ -2,7 +2,10 @@ IAT265 A4 Final Code
 
 Hin Lui 301571436
 
-To TA/Grader: I used perlin noise for cloud and recursion for steam. Images without resources are created my me.
+To TA/Grader: I used perlin noise for cloud and landingBooster movement, and recursion for steam. Images without resources are created my me.
+
+Backup Video:
+    TBA
 
 Resources:
 

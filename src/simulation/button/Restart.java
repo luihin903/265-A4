@@ -1,3 +1,7 @@
+/*
+ * The button to restart the simulation
+ */
+
 package simulation.button;
 
 import static util.Setting.getPanelCenter;

@@ -1,3 +1,7 @@
+/*
+ * The decorator of the booster added to BasicStarship
+ */
+
 package simulation.starship;
 
 import static util.Colors.STEEL;

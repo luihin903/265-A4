@@ -1,3 +1,7 @@
+/*
+ * Rapter engines
+ */
+
 package simulation.button;
 
 import java.awt.Color;
@@ -89,11 +93,6 @@ public class Engine extends Button {
     public static void paintAll(Graphics2D g) {
         for (Engine e : engines) {
             e.paint(g);
-        }
-        for (int i = 0; i < engines.length; i ++) {
-            g.setFont(Setting.font());
-            g.setColor(Color.BLACK);
-            g.drawString(Integer.toString(i), engines[i].pos.x, engines[i].pos.y);
         }
     }
 

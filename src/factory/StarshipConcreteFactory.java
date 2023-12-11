@@ -1,3 +1,7 @@
+/*
+ * The factory for starship
+ */
+
 package factory;
 
 import main.Panel;

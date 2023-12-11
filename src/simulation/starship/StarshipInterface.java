@@ -1,3 +1,7 @@
+/*
+ * The interface of decorators
+ */
+
 package simulation.starship;
 
 import java.awt.Graphics2D;

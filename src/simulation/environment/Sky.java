@@ -29,6 +29,7 @@ public class Sky extends simulation.Object {
     @Override
     protected void draw(Graphics2D g) {
         g.setColor(Util.add(SKY_BLUE.get(), -panel.getLaunchTimer()/4));
+        if (panel.getState() == 10 || panel.getState() == 12) g.setColor(SKY_BLUE.get());
         g.fill(body);
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * The factory for buttons
+ */
+
 package factory;
 
 import main.Panel;
