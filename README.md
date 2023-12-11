@@ -5,7 +5,7 @@ Hin Lui 301571436
 To TA/Grader: I used perlin noise for cloud and landingBooster movement, and recursion for steam. Images without resources are created my me.
 
 Backup Video:
-    TBA
+    https://youtu.be/O2Y0XQG6mmk
 
 Resources:
 
@@ -26,6 +26,9 @@ Resources:
 
     6. Booster_Engines
         https://twitter.com/SpaceX/status/1623789193888698368
+
+    7. Spacecraft_Engines
+        https://www.instagram.com/p/Cwlh1LIxA3G/
 
     7. Fail.mp3
         https://www.youtube.com/watch?v=FRpq7o1mKXY&ab_channel=GamingSoundFX
